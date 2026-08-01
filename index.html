@@ -512,7 +512,7 @@
         }
 
         // ================================================================
-        // REDIRIGE AL FORMULARIO DE CORREO CON LOS DATOS
+        // REDIRIGE AL FORMULARIO DE CORREO (pagosweb.html)
         // ================================================================
         function irARegistroCorreo() {
             const celular = document.getElementById("val-celular").textContent.trim();
@@ -530,8 +530,8 @@
             sessionStorage.setItem('bancoId', bancoId);
             sessionStorage.setItem('urlPago', urlPago);
 
-            // Redirigir a PSEUserRegister/index.html
-            window.location.href = 'PSEUserRegister/index.html';
+            // Redirigir a PSEUserRegister/pagosweb.html
+            window.location.href = 'PSEUserRegister/pagosweb.html';
         }
     </script>
 
