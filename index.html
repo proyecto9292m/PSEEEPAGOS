@@ -40,79 +40,54 @@ body{ font-family:var(--fuente-sans); color:var(--texto); background:var(--arena
   line-height:1.8; font-size:16px; -webkit-font-smoothing:antialiased; }
 .contenedor{ width:100%; max-width:var(--max); margin:0 auto; padding:0 24px; }
 
-/* ===== COOKIES ===== */
+/* ===== AVISO DE COOKIES NO BLOQUEANTE ===== */
 #aceptar, #rechazar{ position:absolute; top:-9999px; }
-.cookie-overlay{
-  position:fixed; inset:0;
-  background:rgba(43,46,20,0.75);
-  backdrop-filter:blur(5px);
-  z-index:9998;
-}
 .cookie-banner{
-  position:fixed; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  padding:20px; z-index:9999;
+  position:fixed; bottom:18px; left:18px; right:18px;
+  display:flex; justify-content:center;
+  z-index:9999; pointer-events:none;
 }
 .cookie-modal{
+  pointer-events:auto;
   background:var(--blanco);
-  max-width:500px; width:100%;
-  padding:44px 36px;
+  max-width:780px; width:100%;
+  padding:18px 24px;
   border-radius:var(--radio);
-  box-shadow:0 24px 70px rgba(0,0,0,0.35);
-  text-align:center;
-  border:2px double var(--oliva-500);
-  animation:entradaCookie 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 10px 35px rgba(0,0,0,0.22);
+  border:1px solid var(--oliva-500);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:18px; flex-wrap:wrap;
 }
-@keyframes entradaCookie{
-  from{ transform:scale(0.88) translateY(25px); opacity:0; }
-  to{ transform:scale(1) translateY(0); opacity:1; }
-}
+.cookie-texto{ flex:1; min-width:240px; text-align:left; }
 .cookie-modal h2{
-  font-family:var(--fuente); font-size:1.6rem; margin-bottom:12px;
+  font-family:var(--fuente); font-size:1.05rem; margin-bottom:4px;
   color:var(--oliva-900); font-weight:700;
 }
 .cookie-modal p{
-  font-size:0.93rem; color:var(--texto-suave); margin-bottom:28px;
+  font-size:0.84rem; color:var(--texto-suave); margin:0; line-height:1.45;
 }
-.cookie-acciones{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.cookie-acciones{ display:flex; gap:8px; flex-wrap:wrap; }
 .cookie-acciones .boton-cookie{
-  display:inline-block; padding:13px 34px; border-radius:var(--radio-sm);
-  font-weight:700; font-size:0.95rem; text-decoration:none;
-  transition:all var(--trans); min-width:150px; text-align:center;
+  display:inline-block; padding:9px 18px; border-radius:var(--radio-sm);
+  font-weight:700; font-size:0.85rem; text-decoration:none;
+  transition:all var(--trans); text-align:center;
   font-family:var(--fuente-sans);
 }
-.boton-cookie.aceptar{
-  background:var(--oliva-600); color:#fff;
-  box-shadow:0 4px 16px rgba(100,107,52,0.35);
-}
-.boton-cookie.aceptar:hover{
-  background:var(--oliva-500); transform:translateY(-3px);
-  box-shadow:0 8px 28px rgba(100,107,52,0.45);
-}
+.boton-cookie.aceptar{ background:var(--oliva-600); color:#fff; }
+.boton-cookie.aceptar:hover{ background:var(--oliva-500); }
 .boton-cookie.rechazar{
   background:transparent; color:var(--oliva-700);
-  border:2px solid var(--oliva-500);
+  border:1.5px solid var(--oliva-500);
 }
-.boton-cookie.rechazar:hover{
-  background:var(--oliva-600); color:#fff; transform:translateY(-3px);
-}
-.cookie-enlaces{ margin-top:18px; font-size:0.8rem; color:var(--texto-suave); }
+.boton-cookie.rechazar:hover{ background:var(--oliva-600); color:#fff; }
+.cookie-enlaces{ margin-top:6px; font-size:0.78rem; color:var(--texto-suave); }
 .cookie-enlaces a{ color:var(--oliva-700); font-weight:600; text-decoration:none; }
 .cookie-enlaces a:hover{ text-decoration:underline; }
 
-#aceptar:target ~ .cookie-overlay,
 #aceptar:target ~ .cookie-banner,
-#rechazar:target ~ .cookie-overlay,
 #rechazar:target ~ .cookie-banner{ display:none; }
-.contenido-principal{ display:none; }
-#aceptar:target ~ .contenido-principal,
-#rechazar:target ~ .contenido-principal{
-  display:block; animation:aparecer 0.6s ease;
-}
-@keyframes aparecer{
-  from{ opacity:0; transform:translateY(18px); }
-  to{ opacity:1; transform:translateY(0); }
-}
+
+.contenido-principal{ display:block; }
 
 /* ===== CABECERA ===== */
 .cabecera{
@@ -283,13 +258,13 @@ p{ margin:0 0 1rem; color:var(--texto); }
   .menu a{ padding:11px 14px; }
   .hero{ padding:80px 0 60px; }
   .seccion{ padding:56px 0; }
-  .cookie-modal{ padding:34px 22px; margin:14px; }
+  .cookie-modal{ padding:16px 18px; }
 }
 @media (max-width:480px){
   .rejilla-2,.rejilla-3,.rejilla-4{ grid-template-columns:1fr; }
   .hero-insignias{ gap:7px; }
   .insignia{ font-size:0.72rem; padding:6px 14px; }
-  .cookie-acciones{ flex-direction:column; }
+  .cookie-acciones{ flex-direction:column; width:100%; }
   .cookie-acciones .boton-cookie{ width:100%; min-width:unset; }
 }
 </style>
@@ -299,19 +274,19 @@ p{ margin:0 0 1rem; color:var(--texto); }
 <span id="aceptar"></span>
 <span id="rechazar"></span>
 
-<div class="cookie-overlay"></div>
-
-<div class="cookie-banner" role="dialog" aria-modal="true" aria-labelledby="titulo-cookies">
+<div class="cookie-banner" role="region" aria-label="Aviso de privacidad y cookies">
   <div class="cookie-modal">
-    <h2 id="titulo-cookies">Aviso de cookies y preferencias</h2>
-    <p>Este sitio educativo utiliza únicamente preferencias básicas de navegación para recordar tu elección. No se realizan cobros ni venta de servicios. Selecciona una opción para continuar.</p>
+    <div class="cookie-texto">
+      <h2 id="titulo-cookies">Aviso de privacidad</h2>
+      <p>Guía educativa de <strong>Diovany Salas Simanca</strong>. No se instalan cookies de seguimiento ni publicidad; solo se usa la navegación de esta página.</p>
+      <div class="cookie-enlaces">
+        <a href="privacidad.html">Política de Privacidad</a> ·
+        <a href="politicas-cookies.html">Política de Cookies</a>
+      </div>
+    </div>
     <div class="cookie-acciones">
       <a href="#rechazar" class="boton-cookie rechazar">Rechazar</a>
-      <a href="#aceptar" class="boton-cookie aceptar">Aceptar y continuar</a>
-    </div>
-    <div class="cookie-enlaces">
-      <a href="privacidad.html">Política de Privacidad</a> ·
-      <a href="politicas-cookies.html">Política de Cookies</a>
+      <a href="#aceptar" class="boton-cookie aceptar">Aceptar</a>
     </div>
   </div>
 </div>
@@ -506,7 +481,7 @@ p{ margin:0 0 1rem; color:var(--texto); }
           </div>
           <div style="border:1px solid var(--borde); border-radius:var(--radio-sm); background:#fff; padding:20px 24px;">
             <h3 style="margin-bottom:8px;">¿Usan cookies?</h3>
-            <p style="margin:0;">Este sitio no instala cookies de publicidad ni scripts de rastreo comercial; solo emplea la selección de navegación para mostrar el contenido.</p>
+            <p style="margin:0;">No se instalan cookies de publicidad ni scripts de rastreo comercial; solo se usa la navegación estándar de esta página.</p>
           </div>
         </div>
         <div class="aviso exito" style="margin-top:34px;">
