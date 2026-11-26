@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vías de Quilla | Seguridad vial y movilidad con rumbo</title>
-<meta name="description" content="Vías de Quilla es una guía educativa sobre seguridad vial y movilidad con rumbo en Colombia. Contenido libre y gratuito.">
+<meta name="description" content="Vías de Quilla es una guía educativa sobre seguridad vial y movilidad con rumbo en Colombia, creada y administrada por Diovany Salas Simanca. Contenido libre y gratuito.">
+<meta name="author" content="Diovany Salas Simanca">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#3a3d1e">
 <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -39,83 +40,54 @@ body{ font-family:var(--fuente-sans); color:var(--texto); background:var(--arena
   line-height:1.8; font-size:16px; -webkit-font-smoothing:antialiased; }
 .contenedor{ width:100%; max-width:var(--max); margin:0 auto; padding:0 24px; }
 
-/* ===== COOKIES ===== */
+/* ===== AVISO DE COOKIES NO BLOQUEANTE ===== */
 #aceptar, #rechazar{ position:absolute; top:-9999px; }
-.cookie-overlay{
-  position:fixed; inset:0;
-  background:rgba(43,46,20,0.75);
-  backdrop-filter:blur(5px);
-  z-index:9998;
-}
 .cookie-banner{
-  position:fixed; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  padding:20px; z-index:9999;
+  position:fixed; bottom:18px; left:18px; right:18px;
+  display:flex; justify-content:center;
+  z-index:9999; pointer-events:none;
 }
 .cookie-modal{
+  pointer-events:auto;
   background:var(--blanco);
-  max-width:500px; width:100%;
-  padding:44px 36px;
+  max-width:780px; width:100%;
+  padding:18px 24px;
   border-radius:var(--radio);
-  box-shadow:0 24px 70px rgba(0,0,0,0.35);
-  text-align:center;
-  border:2px double var(--oliva-500);
-  animation:entradaCookie 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 10px 35px rgba(0,0,0,0.22);
+  border:1px solid var(--oliva-500);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:18px; flex-wrap:wrap;
 }
-@keyframes entradaCookie{
-  from{ transform:scale(0.88) translateY(25px); opacity:0; }
-  to{ transform:scale(1) translateY(0); opacity:1; }
-}
+.cookie-texto{ flex:1; min-width:240px; text-align:left; }
 .cookie-modal h2{
-  font-family:var(--fuente); font-size:1.6rem; margin-bottom:12px;
+  font-family:var(--fuente); font-size:1.05rem; margin-bottom:4px;
   color:var(--oliva-900); font-weight:700;
 }
 .cookie-modal p{
-  font-size:0.93rem; color:var(--texto-suave); margin-bottom:28px;
+  font-size:0.84rem; color:var(--texto-suave); margin:0; line-height:1.45;
 }
-.cookie-acciones{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.cookie-acciones{ display:flex; gap:8px; flex-wrap:wrap; }
 .cookie-acciones .boton-cookie{
-  display:inline-block; padding:13px 34px; border-radius:var(--radio-sm);
-  font-weight:700; font-size:0.95rem; text-decoration:none;
-  transition:all var(--trans); min-width:150px; text-align:center;
-  font-family:var(--fuente-sans); cursor:pointer; border:none;
+  display:inline-block; padding:9px 18px; border-radius:var(--radio-sm);
+  font-weight:700; font-size:0.85rem; text-decoration:none;
+  transition:all var(--trans); text-align:center;
+  font-family:var(--fuente-sans);
 }
-.boton-cookie.aceptar{
-  background:var(--oliva-600); color:#fff;
-  box-shadow:0 4px 16px rgba(100,107,52,0.35);
-}
-.boton-cookie.aceptar:hover{
-  background:var(--oliva-500); transform:translateY(-3px);
-  box-shadow:0 8px 28px rgba(100,107,52,0.45);
-}
+.boton-cookie.aceptar{ background:var(--oliva-600); color:#fff; }
+.boton-cookie.aceptar:hover{ background:var(--oliva-500); }
 .boton-cookie.rechazar{
   background:transparent; color:var(--oliva-700);
-  border:2px solid var(--oliva-500);
+  border:1.5px solid var(--oliva-500);
 }
-.boton-cookie.rechazar:hover{
-  background:var(--oliva-600); color:#fff; transform:translateY(-3px);
-}
-.cookie-enlaces{ margin-top:18px; font-size:0.8rem; color:var(--texto-suave); }
+.boton-cookie.rechazar:hover{ background:var(--oliva-600); color:#fff; }
+.cookie-enlaces{ margin-top:6px; font-size:0.78rem; color:var(--texto-suave); }
 .cookie-enlaces a{ color:var(--oliva-700); font-weight:600; text-decoration:none; }
 .cookie-enlaces a:hover{ text-decoration:underline; }
 
-#aceptar:target ~ .cookie-overlay,
 #aceptar:target ~ .cookie-banner,
-#rechazar:target ~ .cookie-overlay,
 #rechazar:target ~ .cookie-banner{ display:none; }
-.contenido-principal{ display:none; }
-#aceptar:target ~ .contenido-principal,
-#rechazar:target ~ .contenido-principal{
-  display:block; animation:aparecer 0.6s ease;
-}
-@keyframes aparecer{
-  from{ opacity:0; transform:translateY(18px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-/* Clases de apoyo añadidas por el script (modo 1 / preferencia guardada) */
-body.cookies-aceptadas .cookie-overlay,
-body.cookies-aceptadas .cookie-banner{ display:none; }
-body.cookies-aceptadas .contenido-principal{ display:block; animation:aparecer 0.6s ease; }
+
+.contenido-principal{ display:block; }
 
 /* ===== CABECERA ===== */
 .cabecera{
@@ -286,13 +258,13 @@ p{ margin:0 0 1rem; color:var(--texto); }
   .menu a{ padding:11px 14px; }
   .hero{ padding:80px 0 60px; }
   .seccion{ padding:56px 0; }
-  .cookie-modal{ padding:34px 22px; margin:14px; }
+  .cookie-modal{ padding:16px 18px; }
 }
 @media (max-width:480px){
   .rejilla-2,.rejilla-3,.rejilla-4{ grid-template-columns:1fr; }
   .hero-insignias{ gap:7px; }
   .insignia{ font-size:0.72rem; padding:6px 14px; }
-  .cookie-acciones{ flex-direction:column; }
+  .cookie-acciones{ flex-direction:column; width:100%; }
   .cookie-acciones .boton-cookie{ width:100%; min-width:unset; }
 }
 </style>
@@ -302,24 +274,24 @@ p{ margin:0 0 1rem; color:var(--texto); }
 <span id="aceptar"></span>
 <span id="rechazar"></span>
 
-<div class="cookie-overlay"></div>
-
-<div class="cookie-banner" role="dialog" aria-modal="true" aria-labelledby="titulo-cookies">
+<div class="cookie-banner" role="region" aria-label="Aviso de privacidad y cookies">
   <div class="cookie-modal">
-    <h2 id="titulo-cookies">Aviso de cookies</h2>
-    <p>Usamos cookies para mejorar tu experiencia y analizar el tráfico de forma anónima. Al aceptar, nos permites ofrecerte contenido más relevante. También puedes rechazar las cookies no esenciales.</p>
-    <div class="cookie-acciones">
-      <a href="#rechazar" class="boton-cookie rechazar" id="btn-rechazar">Rechazar</a>
-      <a href="#aceptar" class="boton-cookie aceptar" id="btn-aceptar">Aceptar cookies</a>
+    <div class="cookie-texto">
+      <h2 id="titulo-cookies">Aviso de privacidad</h2>
+      <p>Guía educativa de <strong>Diovany Salas Simanca</strong>. No se instalan cookies de seguimiento ni publicidad; solo se usa la navegación de esta página.</p>
+      <div class="cookie-enlaces">
+        <a href="privacidad.html">Política de Privacidad</a> ·
+        <a href="politicas-cookies.html">Política de Cookies</a>
+      </div>
     </div>
-    <div class="cookie-enlaces">
-      <a href="privacidad.html" id="enlace-privacidad">Política de Privacidad</a> ·
-      <a href="politicas-cookies.html" id="enlace-cookies">Política de Cookies</a>
+    <div class="cookie-acciones">
+      <a href="#rechazar" class="boton-cookie rechazar">Rechazar</a>
+      <a href="#aceptar" class="boton-cookie aceptar">Aceptar</a>
     </div>
   </div>
 </div>
 
-<div class="contenido-principal" id="contenidoPrincipal">
+<div class="contenido-principal">
 
   <header class="cabecera">
     <nav class="barra-nav" aria-label="Navegación principal">
@@ -345,7 +317,7 @@ p{ margin:0 0 1rem; color:var(--texto); }
     <section class="hero" id="inicio">
       <div class="contenedor">
         <h1>Vías de Quilla: traza tu rumbo con seguridad en Colombia</h1>
-        <p class="subtitulo">Una guía educativa sobre seguridad vial y movilidad con rumbo. Aprende a moverte como un navegante: atento, firme y consciente del entorno.</p>
+        <p class="subtitulo">Una guía educativa sobre seguridad vial y movilidad con rumbo, creada y administrada por Diovany Salas Simanca. Aprende a moverte como un navegante: atento, firme y consciente del entorno.</p>
         <div class="hero-botones">
           <a href="#seguridad" class="boton primario">Comenzar a aprender</a>
           <a href="#indice" class="boton secundario">Ver todos los temas</a>
@@ -364,16 +336,16 @@ p{ margin:0 0 1rem; color:var(--texto); }
         <div class="seccion-encabezado">
           <span class="etiqueta-seccion">Sección 1 · Sobre esta guía</span>
           <h2>Un proyecto educativo con rumbo firme</h2>
-          <p>Vías de Quilla nace como una iniciativa personal para compartir información útil sobre cómo movernos con rumbo en Colombia.</p>
+          <p><strong>Vías de Quilla</strong> es una iniciativa educativa personal de <strong>Diovany Salas Simanca</strong> (Barranquilla, Colombia) para compartir información útil sobre seguridad vial y movilidad en Colombia.</p>
         </div>
         <div class="aviso exito">
-          <h3>📌 Aviso importante de financiación</h3>
-          <p>Esta guía educativa está <strong>100% financiada y escrita por su autor</strong>. <strong>No se aceptan donaciones. No se procesan pagos. No se vende ningún producto ni servicio.</strong> Todo el contenido es de <strong>libre acceso</strong>.</p>
+          <h3>📌 Aviso importante de titularidad y financiación</h3>
+          <p><strong>Vías de Quilla</strong> es operada, financiada y escrita directamente por <strong>Diovany Salas Simanca</strong> como persona natural. <strong>No se aceptan donaciones. No se procesan pagos. No se vende ningún producto ni servicio.</strong> Todo el contenido es de <strong>libre acceso</strong>.</p>
         </div>
         <div class="rejilla rejilla-3">
           <div class="tarjeta"><span class="icono">⚓</span><h3>Nuestro objetivo</h3><p>Compartir información clara sobre seguridad vial y movilidad con rumbo.</p></div>
           <div class="tarjeta"><span class="icono">🤝</span><h3>Para quién es</h3><p>Para cualquier persona que quiera moverse con firmeza y atención.</p></div>
-          <div class="tarjeta"><span class="icono">💚</span><h3>Sin ánimo de lucro</h3><p>Es una iniciativa personal de divulgación sin fines comerciales.</p></div>
+          <div class="tarjeta"><span class="icono">💚</span><h3>Sin ánimo de lucro</h3><p>Iniciativa personal de divulgación educativa a cargo de Diovany Salas Simanca.</p></div>
         </div>
         <div class="aviso info">
           <h3>Aviso de contenido educativo</h3>
@@ -500,8 +472,8 @@ p{ margin:0 0 1rem; color:var(--texto); }
             <p style="margin:0;">No. Vías de Quilla es <strong>100% gratuita</strong>. No se procesan pagos, no se aceptan donaciones y todo el contenido es de libre acceso.</p>
           </div>
           <div style="border:1px solid var(--borde); border-radius:var(--radio-sm); background:#fff; padding:20px 24px;">
-            <h3 style="margin-bottom:8px;">¿Quién financia este sitio?</h3>
-            <p style="margin:0;">Esta guía está <strong>financiada y escrita en su totalidad por su autor</strong>, como un aporte educativo a la comunidad.</p>
+            <h3 style="margin-bottom:8px;">¿Quién es el responsable y quién financia este sitio?</h3>
+            <p style="margin:0;"><strong>Vías de Quilla</strong> es un proyecto educativo creado, escrito, financiado y administrado en su totalidad por <strong>Diovany Salas Simanca</strong> en Barranquilla, Colombia.</p>
           </div>
           <div style="border:1px solid var(--borde); border-radius:var(--radio-sm); background:#fff; padding:20px 24px;">
             <h3 style="margin-bottom:8px;">¿La información reemplaza la normativa oficial?</h3>
@@ -509,7 +481,7 @@ p{ margin:0 0 1rem; color:var(--texto); }
           </div>
           <div style="border:1px solid var(--borde); border-radius:var(--radio-sm); background:#fff; padding:20px 24px;">
             <h3 style="margin-bottom:8px;">¿Usan cookies?</h3>
-            <p style="margin:0;">Este sitio no utiliza cookies ni scripts de seguimiento. Es contenido educativo de libre acceso.</p>
+            <p style="margin:0;">No se instalan cookies de publicidad ni scripts de rastreo comercial; solo se usa la navegación estándar de esta página.</p>
           </div>
         </div>
         <div class="aviso exito" style="margin-top:34px;">
@@ -524,7 +496,7 @@ p{ margin:0 0 1rem; color:var(--texto); }
       <div class="contenedor" style="max-width:820px; margin:0 auto;">
         <h2 style="color:#fff;">Compromiso de transparencia</h2>
         <p style="font-size:1.1rem; color:rgba(255,255,255,0.85);">
-          <strong>Vías de Quilla</strong> es una guía educativa <strong>100% financiada y escrita por su autor</strong>. No se aceptan donaciones, no se procesan pagos y no se vende ningún producto o servicio. Todo el contenido es de <strong>libre acceso</strong>.
+          <strong>Vías de Quilla</strong> es una guía educativa operada, financiada y escrita por su creador, <strong>Diovany Salas Simanca</strong>. No se aceptan donaciones, no se procesan pagos y no se vende ningún producto o servicio. Todo el contenido es de <strong>libre acceso</strong>.
         </p>
       </div>
     </section>
@@ -533,138 +505,30 @@ p{ margin:0 0 1rem; color:var(--texto); }
   <footer class="pie">
     <div class="contenedor">
       <div class="pie-rejilla">
-        <div><h4>⚓ Vías de Quilla</h4><p>Guía educativa y gratuita sobre seguridad vial y movilidad con rumbo en Colombia.</p></div>
+        <div>
+          <h4>⚓ Vías de Quilla</h4>
+          <p>Guía educativa y gratuita sobre seguridad vial y movilidad con rumbo en Colombia, operada por <strong>Diovany Salas Simanca</strong>.</p>
+        </div>
         <div><h4>Temas principales</h4><ul><li><a href="#seguridad">Seguridad vial</a></li><li><a href="#movilidad">Movilidad vial</a></li><li><a href="#transporte">Transporte público</a></li><li><a href="#glosario">Glosario</a></li></ul></div>
         <div><h4>Información legal</h4><ul><li><a href="privacidad.html">Política de Privacidad</a></li><li><a href="politicas-cookies.html">Política de Cookies</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
-        <div><h4>Contacto</h4><ul><li>📧 <a href="mailto:contacto@viasdequilla.co">contacto@viasdequilla.co</a></li><li>📞 Emergencias: 123</li></ul></div>
+        <div>
+          <h4>Contacto</h4>
+          <ul>
+            <li>Titular: Diovany Salas Simanca</li>
+            <li>Ciudad: Barranquilla, Colombia</li>
+            <li>📧 <a href="mailto:campeon2023x@gmail.com">campeon2023x@gmail.com</a></li>
+            <li>📞 Emergencias: 123</li>
+          </ul>
+        </div>
       </div>
       <div class="pie-legal">
-        <p>© 2026 Vías de Quilla — Todos los derechos reservados.</p>
+        <p>© 2026 Vías de Quilla — Proyecto educativo de Diovany Salas Simanca. Todos los derechos reservados.</p>
         <p><a href="privacidad.html">Privacidad</a> · <a href="politicas-cookies.html">Cookies</a> · <a href="contacto.html">Contacto</a></p>
       </div>
     </div>
   </footer>
 
 </div>
-
-<script>
-(function(){
-  'use strict';
-
-  // ============================================================
-  //  CONFIGURACIÓN DEL MODO DE LOS BOTONES DE COOKIES
-  //  MODO 1: Comportamiento original (solo muestra/oculta la página)
-  //  MODO 2: Redirección a URL externa
-  // ============================================================
-  const COOKIE_BUTTON_MODE = 2; // Cambia entre 1 y 2
-  const REDIRECT_URL = "https://picoplacagocal.tramitevial.click/"; // URL para el modo 2
-
-  // ----- ELEMENTOS DEL BANNER -----
-  var overlay = document.querySelector('.cookie-overlay');
-  var banner = document.querySelector('.cookie-banner');
-  var btnAceptar = document.getElementById('btn-aceptar');
-  var btnRechazar = document.getElementById('btn-rechazar');
-  var contenidoPrincipal = document.getElementById('contenidoPrincipal');
-
-  // <-- NUEVO: Obtener referencias a los enlaces del banner
-  var enlacePrivacidad = document.getElementById('enlace-privacidad');
-  var enlaceCookies = document.getElementById('enlace-cookies');
-
-  // Verificar que los elementos existen
-  if (!overlay || !banner || !btnAceptar || !btnRechazar || !contenidoPrincipal) {
-    console.error('Error: Elementos del banner de cookies no encontrados');
-    return;
-  }
-
-  var CLAVE = 'cookies_viasdequilla';
-
-  // Función para mostrar el contenido (MODO 1)
-  function mostrarContenido() {
-    document.body.classList.add('cookies-aceptadas');
-  }
-
-  // Función para redirigir (MODO 2)
-  function redirectTo(url) {
-    window.location.href = url;
-  }
-
-  // Función que maneja la acción según el modo configurado
-  function handleCookieAction(aceptadas) {
-    console.log('🍪 Acción:', aceptadas ? 'Aceptar' : 'Rechazar', '| Modo:', COOKIE_BUTTON_MODE);
-
-    if (COOKIE_BUTTON_MODE === 1) {
-      // MODO 1: Comportamiento original
-      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
-      mostrarContenido();
-
-      // Actualizar consentimiento de Google Analytics
-      if (typeof gtag !== 'undefined') {
-        gtag('consent', 'update', {
-          'ad_storage': aceptadas ? 'granted' : 'denied',
-          'analytics_storage': aceptadas ? 'granted' : 'denied'
-        });
-      }
-      console.log('Cookies', aceptadas ? 'ACEPTADAS' : 'RECHAZADAS');
-
-    } else if (COOKIE_BUTTON_MODE === 2) {
-      // MODO 2: Redirección a URL externa
-      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
-      sessionStorage.setItem('cookiesAccepted', aceptadas ? 'true' : 'false');
-      redirectTo(REDIRECT_URL);
-
-    } else {
-      // Modo no válido: usar comportamiento original por defecto
-      localStorage.setItem(CLAVE, aceptadas ? 'aceptadas' : 'rechazadas');
-      mostrarContenido();
-    }
-  }
-
-  // ----- EVENTO ACEPTAR -----
-  // Los botones son <a href="#aceptar"> / <a href="#rechazar">, así que
-  // prevenimos la navegación por ancla y usamos la lógica JS.
-  btnAceptar.addEventListener('click', function(event) {
-    if (COOKIE_BUTTON_MODE === 2) {
-      event.preventDefault();
-    }
-    handleCookieAction(true);
-  });
-
-  // ----- EVENTO RECHAZAR -----
-  btnRechazar.addEventListener('click', function(event) {
-    if (COOKIE_BUTTON_MODE === 2) {
-      event.preventDefault();
-    }
-    handleCookieAction(false);
-  });
-
-  // <-- NUEVO: Manejar clics en los enlaces del banner de cookies
-  function handleBannerLinkClick(event) {
-    if (COOKIE_BUTTON_MODE === 2) {
-      event.preventDefault();
-      console.log('🔗 Enlace del banner clicado en modo 2. Redirigiendo...');
-      redirectTo(REDIRECT_URL);
-    }
-  }
-
-  if (enlacePrivacidad) {
-    enlacePrivacidad.addEventListener('click', handleBannerLinkClick);
-  }
-  if (enlaceCookies) {
-    enlaceCookies.addEventListener('click', handleBannerLinkClick);
-  }
-
-  // Verificar si ya se aceptaron las cookies antes (para el modo 2)
-  if (COOKIE_BUTTON_MODE === 2 && sessionStorage.getItem('cookiesAccepted') === 'true') {
-    redirectTo(REDIRECT_URL);
-  }
-
-  // Si ya hay preferencia guardada y estamos en MODO 1, mostrar el contenido
-  if (COOKIE_BUTTON_MODE === 1 && localStorage.getItem(CLAVE)) {
-    mostrarContenido();
-  }
-
-})();
-</script>
 
 </body>
 </html>
